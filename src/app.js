@@ -1,25 +1,25 @@
-/**
- * Created by ryn on 2016/9/5.
- */
+import React from 'react'
+import { render } from 'react-dom'
+import { Router, browserHistory } from 'react-router'
 
-'use strict';
+import withExampleBasename from './withExampleBasename'
+import './stubs/COURSES'
 
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-
-class App extends Component {
-    render () {
-        return (
-            <div>
-                <h1>app1</h1>
-                <div>content</div>
-                <div>AAHHAAfsd</div>
-            </div>
-        );
-    }
+const rootRoute = {
+  childRoutes: [ {
+    path: '/',
+    component: require('./components/App'),
+    childRoutes: [
+      require('./routes/Calendar'),
+      require('./routes/Course'),
+      require('./routes/Grades')
+    ]
+  } ]
 }
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('container')
-);
+render((
+  <Router
+    history={browserHistory}
+    routes={rootRoute}
+  />
+), document.getElementById('container'))

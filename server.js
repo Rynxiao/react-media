@@ -1,27 +1,29 @@
 'use strict';
 
+var http = require('http');
+var express = require('express');
+var app = express();
+
 var webpack = require('webpack');
 var config = require('./webpack.config.js');
-var WebpackDevServer = require('webpack-dev-server');
 var compiler = webpack(config);
 
-config.entry.app.unshift("webpack-dev-server/client?http://localhost:8080/", "webpack/hot/dev-server");
+app.use(require("webpack-dev-middleware")(compiler, {
+    noInfo: true, 
+    publicPath: config.output.publicPath
+}));
 
-new WebpackDevServer(compiler, {
-    publicPath : config.output.publicPath,
-    hot : true,
-    noInfo : false,
-    historyApiFallback : true,
-    progress : true,
-    stats: {
-        colors: true
-    }
+app.use(require("webpack-hot-middleware")(compiler, {
+    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
+}));
 
-    // inline : true,
-    // contentBase : './public/dist'
-}).listen(8080, 'localhost', function(err, result) {
-    if (err) {
-        console.log(err);
-    }
-    console.log('Listen at localhost:8080');
+app.get("/", function(req, res) {
+    res.sendFile(__dirname + '/index.html');
 });
+
+var server = http.createServer(app);
+server.listen(8080, function() {
+    console.log("Listening on %j", server.address());
+});
+
+

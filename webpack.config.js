@@ -1,17 +1,21 @@
 var webpack = require('webpack');
 
 module.exports = {
+    devtool: '#eval-source-map',
     entry : {
-        app : ['./src/app.js']
+        app : [
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            './src/app.js'
+        ]
     },
     output : {
         path : __dirname + '/assets/',
         filename : '[name].bundle.js',
-        publicPath : 'http://localhost:8080/assets/'
+        publicPath : '/'
     },
     module : {
         loaders : [
-            { test : /\.js|\.jsx$/, loader : 'babel' },
+            { test : /\.js|\.jsx$/, exclude: /node_modules/, loader : 'babel' },
             { test : /\.css$/, loader : 'style!css' }
         ]
     },
