@@ -1,4 +1,2 @@
-# react-media
-视频、音频案例制作
-
-## 现暂时作为基础服务器案例
+# react-simple-server
+简单的案例制作模板
