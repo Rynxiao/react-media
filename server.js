@@ -10,7 +10,11 @@ var compiler = webpack(config);
 
 app.use(require("webpack-dev-middleware")(compiler, {
     noInfo: true, 
-    publicPath: config.output.publicPath
+    publicPath: config.output.publicPath,
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000 // 每秒轮询检查文件变动
+    }
 }));
 
 app.use(require("webpack-hot-middleware")(compiler, {
